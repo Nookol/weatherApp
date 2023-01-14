@@ -1,6 +1,6 @@
 body{
-    background-color: rgba(128, 128, 128, 0.56);
-    color: #dedede;
+    background-image: linear-gradient(#7aa4ff, #ff6790);
+    background-repeat: no-repeat;
 }
 
 #content{
@@ -12,28 +12,28 @@ body{
 }
 
 @media only screen and (max-width: 1200px) {
-    #weatherRender th{
-        padding-top: 50px;
-        padding-bottom: 50px;
+    #weatherRender {
+        text-align: center;
+        padding-top: 75px;
+        padding-bottom: 75px;
     }
 
-    #weatherRender th h1{
+    #weatherRender h1{
+        padding-top: 20px;
+        padding-bottom: 20px;
         font-size: 170px;
     }
-    #weatherRender th h3{
+    #weatherRender  h3{
+        padding-top: 20px;
+        padding-bottom: 20px;
         font-size: 120px;
     }
-    #weatherRender th h6{
+    #weatherRender  h6{
+        padding-top: 20px;
+        padding-bottom: 20px;
         font-size: 60px;
     }
 
-    #searchInput{
-        text-align: center;
-        width: 100%;
-    }
-    #searchInput .mb-3{
-        width: 100%;
-    }
 
     .table> tbody > tr > td,
     .table > tbody > tr > th,
@@ -44,10 +44,11 @@ body{
         border: none;
     }
     body {
+        background-image: linear-gradient(#7aa4ff, #ff6790);
+        background-repeat: no-repeat;
         min-height: 100vh;
-        max-height: 100px;
-        min-height: 100vh;
-        background-color: #989696;
+        max-height: 100vh;
+        max-width: 100%;
         width: 100%;
         height: 100%;
         position:relative;
