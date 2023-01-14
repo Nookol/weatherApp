@@ -23,12 +23,12 @@ body {
     #weatherRender h1{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 150px;
+        font-size: 100px;
     }
     #weatherRender  h3{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 100px;
+        font-size: 60px;
     }
     #weatherRender  h6{
         padding-top: 20px;
