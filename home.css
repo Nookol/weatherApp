@@ -1,6 +1,9 @@
-body{
-    background-image: linear-gradient(rgba(14, 19, 26, 0.81), #c14bff);
-    background-repeat: no-repeat;
+body {
+    background-image: linear-gradient(rgb(248, 0, 112), #c14bff);
+    min-height: 90vh;
+    max-width: 100%;
+    position:relative;
+    overflow-y: scroll;
 }
 
 #content{
@@ -11,7 +14,6 @@ body{
     text-align: center;
 }
 
-@media only screen and (max-width: 1200px) {
     #weatherRender {
         text-align: center;
         padding-top: 75px;
@@ -44,11 +46,4 @@ body{
         border: none;
     }
 
-    body {
-        min-height: 90vh;
-        max-height: 100vh;
-        max-width: 100%;
-        position:relative;
-        overflow-y: scroll;
-    }
-}
+
