@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Blah</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="home.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
 </head>
@@ -15,7 +16,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th colspan="100" scope="col"><h3 id="location"></h3></th>
+                    <th scope="col"><h3 id="location"></h3></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,10 +38,10 @@
                 </tbody>
             </table>
         </div>
-<!--        <small>Enter Zip code</small>-->
-<!--        <input id='zip_text_box' class="form-control" type="text" placeholder="" aria-label="default input example">-->
-<!--        <button onclick="userData.setZipCode(), getWeather()" type="submit" class="btn btn-primary mb-3"><h1>Confirm</h1></button>-->
-   </div>
+        <!--        <small>Enter Zip code</small>-->
+        <!--        <input id='zip_text_box' class="form-control" type="text" placeholder="" aria-label="default input example">-->
+        <!--        <button onclick="userData.setZipCode(), getWeather()" type="submit" class="btn btn-primary mb-3"><h1>Confirm</h1></button>-->
+    </div>
 </div>
 
 </body>
@@ -61,7 +62,7 @@
     document.body.append(spinner.el)
 
 
-    let successHandler = function(position) {
+    let successHandler = function (position) {
         userData.latitude = position.coords.latitude;
         userData.longitude = position.coords.longitude;
         document.getElementById('content').style.display = 'initial'
@@ -71,8 +72,8 @@
 
     let errorHandler = function (errorObj) {
         alert(errorObj.code + ": " + errorObj.message);
-        alert("something wrong take this lat " + 26.0546106 );
-        alert("something wrong take this lng " +-98.3939791);
+        alert("something wrong take this lat " + 26.0546106);
+        alert("something wrong take this lng " + -98.3939791);
 
     };
 
@@ -81,29 +82,28 @@
         {enableHighAccuracy: true, maximumAge: 10000});
 
 
-
     function kelvinToFahrenheit(kelvin) {
-        return (kelvin - 273.15) * 9/5 + 32;
+        return (kelvin - 273.15) * 9 / 5 + 32;
     }
 
     let userData = {
-        latitude : null,
+        latitude: null,
         longitude: null,
         zipCode: null,
-        setZipCode: function (){
-           this.zipCode = document.getElementById('zip_text_box').value
+        setZipCode: function () {
+            this.zipCode = document.getElementById('zip_text_box').value
         }
 
     }
 
     let render = {
-        
-        showWeather: function (){
+
+        showWeather: function () {
             let location = document.getElementById('location');
             let temp = document.getElementById('temp')
             let desc = document.getElementById('description')
             let minMax = document.getElementById('minMax')
-            
+
             location.innerHTML = weatherData.location;
             temp.innerHTML = `${weatherData.actualTemp.toFixed()}°`;
             desc.innerHTML = weatherData.description;
@@ -112,35 +112,35 @@
     }
 
     let weatherData = {
-        actualTemp : 0,
-        feelsLikeTemp : 0,
-        location : null,
-        description : null,
+        actualTemp: 0,
+        feelsLikeTemp: 0,
+        location: null,
+        description: null,
         tempHigh: null,
         tempLow: null,
     }
 
     let getWeather = () => {
-            const options = {
-                key: '6c433bc9b94f39c617df099ceedc1db6',
-                api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
-            };
+        const options = {
+            key: '6c433bc9b94f39c617df099ceedc1db6',
+            api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
+        };
 
-            fetch(options.api)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    weatherData.location = data.name;
-                    weatherData.description = data.weather[0].description;
-                    weatherData.actualTemp = kelvinToFahrenheit(data.main.temp)
-                    weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max)
-                    weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min)
-                    weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like)
+        fetch(options.api)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                weatherData.location = data.name;
+                weatherData.description = data.weather[0].description;
+                weatherData.actualTemp = kelvinToFahrenheit(data.main.temp)
+                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max)
+                weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min)
+                weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like)
 
-                })
+            })
 
-                .catch(error => console.error(error))
-                .finally(load)
+            .catch(error => console.error(error))
+            .finally(load)
     }
 
     let load = () => {
