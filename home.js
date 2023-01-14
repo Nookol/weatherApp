@@ -1,3 +1,0 @@
-function blah(){
-    alert()
-}
