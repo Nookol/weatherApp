@@ -1,39 +1,50 @@
 body {
-    background-image: linear-gradient(rgb(248, 0, 112), #c14bff);
+    background-image: linear-gradient(rgb(255, 103, 144), #ff8126);
     min-height: 100vh;
     max-width: 100%;
     position:relative;
     overflow-y: scroll;
 }
 
+#bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 #content{
     display: none;
 }
 
-#weatherRender th{
+#weatherRender {
+    background-image: url("snow.gif");
+    background-repeat: repeat;
     text-align: center;
 }
 
     #weatherRender {
         text-align: center;
-        padding-top: 75px;
-        padding-bottom: 50px;
+        padding-top: 25px;
+        padding-bottom: 25px;
     }
 
     #weatherRender h1{
-        padding-top: 20px;
-        padding-bottom: 20px;
-        font-size: 40px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 15vh;
     }
     #weatherRender  h3{
-        padding-top: 20px;
-        padding-bottom: 20px;
-        font-size: 30px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 7vh;
     }
     #weatherRender  h6{
-        padding-top: 20px;
-        padding-bottom: 20px;
-        font-size: 40px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 3vh;
     }
 
 
