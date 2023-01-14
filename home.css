@@ -1,6 +1,6 @@
 body{
-    background-color: gray;
-    color: whitesmoke;
+    background-color: rgba(128, 128, 128, 0.56);
+    color: #000000;
 }
 
 #content{
