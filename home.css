@@ -1,6 +1,6 @@
 body {
     background-image: linear-gradient(rgb(248, 0, 112), #c14bff);
-    min-height: 90vh;
+    min-height: 100vh;
     max-width: 100%;
     position:relative;
     overflow-y: scroll;
@@ -23,17 +23,17 @@ body {
     #weatherRender h1{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 170px;
+        font-size: 150px;
     }
     #weatherRender  h3{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 120px;
+        font-size: 100px;
     }
     #weatherRender  h6{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 60px;
+        font-size: 40px;
     }
 
 
