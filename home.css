@@ -17,18 +17,18 @@ body {
     #weatherRender {
         text-align: center;
         padding-top: 75px;
-        padding-bottom: 75px;
+        padding-bottom: 50px;
     }
 
     #weatherRender h1{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 100px;
+        font-size: 40px;
     }
     #weatherRender  h3{
         padding-top: 20px;
         padding-bottom: 20px;
-        font-size: 60px;
+        font-size: 30px;
     }
     #weatherRender  h6{
         padding-top: 20px;
