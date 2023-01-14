@@ -1,0 +1,76 @@
+body{
+    background-color: gray;
+    color: whitesmoke;
+}
+
+#content{
+    display: none;
+}
+
+#weatherRender th{
+    text-align: center;
+}
+
+#searchInput{
+    padding: 100px 0px 100px 0;
+    text-align: center;
+    margin-left: 25%;
+    max-width: 50%;
+}
+    #searchInput .mb-3{
+        width: 100%;
+    }
+
+@media only screen and (max-width: 1200px) {
+    #weatherRender th{
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    #weatherRender th h1{
+        font-size: 60px;
+    }
+    #weatherRender th h3{
+        font-size: 80px;
+    }
+    #weatherRender th h6{
+        font-size: 40px;
+    }
+    #content{
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: -50%;
+        width: 200%;
+    }
+    #searchInput{
+        text-align: center;
+        width: 100%;
+    }
+    #searchInput .mb-3{
+        width: 100%;
+    }
+    button{
+        height: 100px;
+    }
+    #zip_text_box{
+        height: 50px;
+        font-size: 40px;
+    }
+
+    body {
+        min-height: 100vh;
+        max-height: 100px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding-top: 60px;
+        margin: 0;
+        background-color: #989696;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+}
