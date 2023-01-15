@@ -1,7 +1,7 @@
 body {
     background: linear-gradient(120deg, #ff0062, #ff8126, #00ffa8, #00f7ff);
     animation: gradient 8s ease infinite;
-    background-size: 5000%;
+    background-size: 10000%;
 }
 
 @keyframes gradient {
@@ -14,6 +14,19 @@ body {
     100% {
         background-position: 0% 50%;
     }
+}
+hr.solid {
+    border-top: 3px solid rgba(14, 19, 26, 0.8);
+    width: 66%
+}
+#quoteButton{
+    background: rgba(255, 255, 255, 0);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    color: rgba(0, 0, 0, 0.63);
+    border-color: #0e131a;
 }
 
 .video-container {
