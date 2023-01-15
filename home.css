@@ -8,7 +8,7 @@ body {
     -webkit-animation: AnimationName 10s ease infinite;
     -moz-animation: AnimationName 10s ease infinite;
     -o-animation: AnimationName 10s ease infinite;
-    animation: AnimationName 5s ease infinite;
+    animation: AnimationName 3.7s ease infinite;
 }
 
 @-webkit-keyframes AnimationName {
