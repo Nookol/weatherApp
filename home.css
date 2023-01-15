@@ -94,6 +94,14 @@ hr.solid {
         font-family: monospace;
     }
 
+    #weatherRender p button{
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0);
+        color: rgba(0, 0, 0, 0.63);
+        color: rgba(0, 0, 0, 0.63);
+        border-width: thin;
+        font-size: 12px;
+    }
 
 
 

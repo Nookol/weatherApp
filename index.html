@@ -25,6 +25,11 @@
         <!--        </div>-->
         <h3 id="location"></h3>
         <h1 id="temp"></h1>
+        <p>
+            <button class="small-btn" type="button" id="fButton" onclick="getWeather('f')" class="btn btn-primary">F</button>
+            <button class="small-btn" type="button" id="cButton" onclick="getWeather('c')" class="btn btn-primary">C</button>
+            <button class="small-btn" type="button" id="kButton" onclick="getWeather()" class="btn btn-primary">K</button>
+        </p>
         <h6 id="description"></h6>
         <h6 id="minMax"></h6>
     </div>
@@ -61,8 +66,7 @@
                     console.log(result);
                     let qRender = document.getElementById('quoteRender')
                     qRender.innerHTML = `<h4>"${result[0].quote}" <h6 style="text-align: center">-${result[0].author}</h6></h4>`
-                    qRender.innerHTML += `<button type="button" id="quoteButton" onclick="getQuote()" class="btn btn-primary">New Quote</button>
-`
+                    qRender.innerHTML += `<button type="button" id="quoteButton" onclick="getQuote()" class="btn btn-primary">New Quote</button>`
                 },
                 error: function ajaxError(jqXHR) {
                     console.error('Error: ', jqXHR.responseText);
@@ -77,7 +81,7 @@
         document.getElementById('content').style.display = 'initial'
         spinner.stop()
         getQuote();
-        getWeather()
+        getWeather('f')
     };
 
     let errorHandler = function (errorObj) {
@@ -86,7 +90,7 @@
         userData.longitude = -98.3939791;
         document.getElementById('content').style.display = 'initial'
         spinner.stop()
-        getWeather()
+        getWeather('f')
     };
 
     navigator.geolocation.getCurrentPosition(
@@ -94,8 +98,23 @@
         {enableHighAccuracy: true, maximumAge: 10000});
 
 
-    function kelvinToFahrenheit(kelvin) {
-        return (kelvin - 273.15) * 9 / 5 + 32;
+    function kelvinToFahrenheit(kelvin, type, minMax) {
+        if (minMax!=='n'){
+            if (type === 'f'){
+                return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;F`;
+            }
+            if (type === 'c'){
+                return `${(kelvin - 273.15).toFixed()}&deg;C`
+            }
+            else return `${kelvin.toFixed()}&deg;K`
+        }
+        if (type === 'f'){
+            return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;`;
+        }
+        if (type === 'c'){
+            return `${(kelvin - 273.15).toFixed()}&deg;`
+        }
+        else return `${kelvin.toFixed()}&deg;`
     }
 
     let userData = {
@@ -119,7 +138,8 @@
             }
             if (userData.getDate().getHours() > 10) {
             }
-        },
+        }
+        ,
         showWeather: function () {
             let location = document.getElementById('location');
             let temp = document.getElementById('temp')
@@ -127,22 +147,22 @@
             let minMax = document.getElementById('minMax')
 
             location.innerHTML = weatherData.location;
-            temp.innerHTML = `${weatherData.actualTemp.toFixed()}&deg;F`;
+            temp.innerHTML = `${weatherData.actualTemp}`;
             desc.innerHTML = weatherData.description;
-            minMax.innerHTML = `Min ${weatherData.tempLow.toFixed()}°\tMax ${weatherData.tempHigh.toFixed()}°`
+            minMax.innerHTML = `Min ${weatherData.tempLow}\tMax ${weatherData.tempHigh}`
         }
     }
 
     let weatherData = {
-        actualTemp: 0,
-        feelsLikeTemp: 0,
+        actualTemp: null,
+        feelsLikeTemp: null,
         location: null,
         description: null,
         tempHigh: null,
         tempLow: null,
     }
 
-    let getWeather = () => {
+    let getWeather = (type) => {
         const options = {
             x: [
                 {
@@ -163,10 +183,10 @@
                 console.log(data.list)
                 weatherData.location = data.name;
                 weatherData.description = data.weather[0].description;
-                weatherData.actualTemp = kelvinToFahrenheit(data.main.temp)
-                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max)
-                weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min)
-                weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like)
+                weatherData.actualTemp = kelvinToFahrenheit(data.main.temp, type)
+                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max, type , 'n')
+                weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
+                weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
             })
             .catch(error => console.error(error))
             .finally(load)
