@@ -1,8 +1,6 @@
 body {
     min-height: 100vh;
     max-width: 100vh;
-    position:relative;
-    overflow-y: scroll;
     background: linear-gradient(16deg, #d5e2ff, #006eff);
     background-size: 100vh 100vh;
     -webkit-animation: AnimationName 10s ease infinite;
