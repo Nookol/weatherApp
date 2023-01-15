@@ -3,6 +3,7 @@ body {
     animation: gradient 12s ease infinite;
     background-size: 10000%;
 }
+
 html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -19,11 +20,15 @@ html, body {
         background-position: 0% 50%;
     }
 }
-hr.solid {
-    border-top: 3px solid rgba(14, 19, 26, 0.85);
-    width: 66%
+
+hr {
+    background-color: rgba(0, 0, 0, 0.46);
+    height: .75px;
+    border: 0;
+    width: 80%;
 }
-#quoteButton{
+
+#quoteButton {
     background: rgba(255, 255, 255, 0);
     display: block;
     margin-left: auto;
@@ -34,7 +39,8 @@ hr.solid {
     border-color: rgba(0, 0, 0, 0.46);
     border-radius: 10px;
 }
-#content{
+
+#content {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     display: none;
 }
@@ -43,41 +49,58 @@ hr.solid {
     margin-top: 50px;
     text-align: center;
 }
-    #weatherRender h1{
-        margin-top: -10px;
-        font-size: 13.5vh;
-    }
-    #weatherRender  h3{
-        font-size: 6vh;
-    }
-    #weatherRender  h6{
-        margin-top: -5px;
-        font-size: 3vh;
-    }
+
+#weatherRender h1 {
+    margin-top: -10px;
+    font-size: 13.5vh;
+}
+
+#weatherRender h3 {
+    font-size: 6vh;
+}
+
+#weatherRender h6 {
+    margin-top: -5px;
+    font-size: 3vh;
+}
 
 
-    .table> tbody > tr > td,
-    .table > tbody > tr > th,
-    .table > tfoot > tr > td,
-    .table > tfoot > tr > th,
-    .table > thead > tr > td,
-    .table > thead > tr > th {
-        border: none;
-    }
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    border: none;
+}
 
-    #quoteRender h4{
-        padding: 0px 50px 0 50px;
-        text-align: center;
-        font-family: monospace;
+@media (min-width: 700px) {
+    /* big landscape tablets, laptops, and desktops */
+    #quoteRender {
+        margin: 0 70px 0 70px
     }
+}
 
-    #weatherRender p button{
-        border-radius: 40px;
-        background: rgba(255, 255, 255, 0);
-        color: rgba(0, 0, 0, 0.46);
-        border-color: rgba(0, 0, 0, 0.46);
-        font-size: 7px;
+@media (min-width: 1281px) {
+    /* hi-res laptops and desktops */
+    #quoteRender {
+        margin: 0 70px 0 70px
     }
+}
+
+#quoteRender {
+    padding: 15px 55px 0px 55px;
+    text-align: center;
+    font-family: monospace;
+}
+
+#weatherRender p button {
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0);
+    color: rgba(0, 0, 0, 0.46);
+    border-color: rgba(0, 0, 0, 0.46);
+    font-size: 7px;
+}
 
 
 
