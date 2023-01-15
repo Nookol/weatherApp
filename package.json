@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@mdi/js": "^7.1.96",
     "ajax": "^0.0.4",
     "bootstrap": "^3.4.1"
   }

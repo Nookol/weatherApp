@@ -31,6 +31,8 @@
             <button type="button" id="kButton" onclick="getWeather()" class="btn btn-primary">K</button>
         </p>
         <h6 id="description"></h6>
+        <div style="margin-top: -15px" id="weatherIcon">
+        </div>
         <h6 id="minMax"></h6>
     </div>
     <hr class="solid">
@@ -145,11 +147,14 @@
             let temp = document.getElementById('temp')
             let desc = document.getElementById('description')
             let minMax = document.getElementById('minMax')
+            let icon = document.getElementById('weatherIcon')
 
             location.innerHTML = weatherData.location;
             temp.innerHTML = `${weatherData.actualTemp}`;
             desc.innerHTML = weatherData.description;
             minMax.innerHTML = `Min ${weatherData.tempLow}\tMax ${weatherData.tempHigh}`
+            icon.innerHTML = `<img height="60px" src="http://openweathermap.org/img/wn/${weatherData.icon}@2x.png">`
+
         }
     }
 
@@ -160,33 +165,27 @@
         description: null,
         tempHigh: null,
         tempLow: null,
+        icon: null
     }
 
     let getWeather = (type) => {
         const options = {
-            x: [
-                {
-                    dt: 1
-                },
-                {
-                    dt: 2
-                }
-            ],
             key: '6c433bc9b94f39c617df099ceedc1db6',
             api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`,
-            api2: `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
         };
 
         fetch(options.api)
             .then(response => response.json())
             .then(data => {
-                console.log(data.list)
+                console.log(data)
                 weatherData.location = data.name;
                 weatherData.description = data.weather[0].description;
                 weatherData.actualTemp = kelvinToFahrenheit(data.main.temp, type)
                 weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max, type , 'n')
                 weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
                 weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
+                weatherData.icon = data.weather[0].icon
+
             })
             .catch(error => console.error(error))
             .finally(load)
