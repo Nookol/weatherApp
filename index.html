@@ -13,6 +13,13 @@
 <body>
 <div id="content">
     <div id="weatherRender">
+<!--        <div class="video-container" style="position:absolute;">-->
+<!--            <video autoplay muted loop>-->
+<!--                <source src="videos/clouds.mov" type="video/mp4" />-->
+<!--            </video>-->
+<!--            <div class="caption">-->
+<!--            </div>-->
+<!--        </div>-->
         <h3 id="location"></h3>
         <h1 id="temp"></h1>
         <h6 id="description"></h6>
@@ -26,7 +33,7 @@
     var opts = {
         lines: 13, // The number of lines to draw
         length: 70, // The length of each line
-        width: 50, // The line thickness
+        width: 10, // The line thickness
         radius: 20, // The radius of the inner circle
         color: '#595858', // #rgb or #rrggbb or array of colors
         speed: 1.25, // Rounds per second
@@ -48,9 +55,11 @@
 
     let errorHandler = function (errorObj) {
         alert(errorObj.code + ": " + errorObj.message);
-        alert("something wrong take this lat " + 26.0546106);
-        alert("something wrong take this lng " + -98.3939791);
-
+        userData.latitude = 26.0546106;
+        userData.longitude = -98.3939791;
+        document.getElementById('content').style.display = 'initial'
+        spinner.stop()
+        getWeather()
     };
 
     navigator.geolocation.getCurrentPosition(

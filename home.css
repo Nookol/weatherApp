@@ -1,27 +1,44 @@
 body {
-    background-image: linear-gradient(rgb(255, 103, 144), #ff8126);
+    background-image: linear-gradient(rgb(159, 0, 0), #ff8126);
     min-height: 100vh;
     max-width: 100%;
     position:relative;
     overflow-y: scroll;
 }
 
-#bg-video {
+.video-container {
+    height: 90vw;
+    width: 100vw;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+}
+
+.video-container video {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Just styling the content of the div, the *magic* in the previous rules */
+.video-container .caption {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  color: #dc0000;
+  
 }
 
 #content{
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     display: none;
 }
 
 #weatherRender {
-    background-image: url("snow.gif");
-    background-repeat: repeat;
     text-align: center;
 }
 
@@ -32,7 +49,6 @@ body {
     }
 
     #weatherRender h1{
-        padding-top: 10px;
         padding-bottom: 10px;
         font-size: 15vh;
     }
@@ -56,5 +72,7 @@ body {
     .table > thead > tr > th {
         border: none;
     }
+
+
 
 
