@@ -8,18 +8,19 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="home.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+
 </head>
 
-<body>
+<body onload="render.createBackground()">
 <div id="content">
     <div id="weatherRender">
-<!--        <div class="video-container" style="position:absolute;">-->
-<!--            <video autoplay muted loop>-->
-<!--                <source src="videos/clouds.mov" type="video/mp4" />-->
-<!--            </video>-->
-<!--            <div class="caption">-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="video-container" style="position:absolute;">-->
+        <!--            <video autoplay muted loop>-->
+        <!--                <source src="videos/clouds.mov" type="video/mp4" />-->
+        <!--            </video>-->
+        <!--            <div class="caption">-->
+        <!--            </div>-->
+        <!--        </div>-->
         <h3 id="location"></h3>
         <h1 id="temp"></h1>
         <h6 id="description"></h6>
@@ -30,6 +31,7 @@
 </body>
 
 <script>
+
     var opts = {
         lines: 13, // The number of lines to draw
         length: 70, // The length of each line
@@ -43,7 +45,6 @@
 
     var spinner = new Spinner(opts).spin();
     document.body.append(spinner.el)
-
 
     let successHandler = function (position) {
         userData.latitude = position.coords.latitude;
@@ -72,6 +73,11 @@
     }
 
     let userData = {
+        getDate: function () {
+            let date = new Date();
+            console.log(date.getHours())
+            return date;
+        },
         latitude: null,
         longitude: null,
         zipCode: null,
@@ -79,10 +85,16 @@
             this.zipCode = document.getElementById('zip_text_box').value
         }
 
+
     }
 
     let render = {
-
+        createBackground: function () {
+            if (userData.getDate().getHours() <=5 ) {
+            }
+            if (userData.getDate().getHours() >10 ) {
+            }
+        },
         showWeather: function () {
             let location = document.getElementById('location');
             let temp = document.getElementById('temp')
@@ -111,10 +123,10 @@
             api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
         };
 
+
         fetch(options.api)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 weatherData.location = data.name;
                 weatherData.description = data.weather[0].description;
                 weatherData.actualTemp = kelvinToFahrenheit(data.main.temp)
