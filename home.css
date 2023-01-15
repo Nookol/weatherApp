@@ -1,33 +1,19 @@
 body {
-    min-height: 100vh;
-    max-width: 100vh;
-    background: linear-gradient(120deg, #008cff, #c14bff, #dc0000, orange);
-    background-size: 100vh 100vh;
-    -webkit-animation: AnimationName 0s ease infinite;
-    -moz-animation: AnimationName 5s ease infinite;
-    -o-animation: AnimationName 5s ease infinite;
-    animation: AnimationName 10s ease infinite;
+    background: linear-gradient(120deg, #ff0062, #ff8126, #00ffa8, #00f7ff);
+    animation: gradient 8s ease infinite;
+    background-size: 5000%;
 }
 
-@-webkit-keyframes AnimationName {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:50% -100%}
-}
-@-moz-keyframes AnimationName {
-    0%{background-position:0% 50%}
-    50%{background-position:-100% 50%}
-    100%{background-position:0% 50%}
-}
-@-o-keyframes AnimationName {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:100% 50%}
-}
-@keyframes AnimationName {
-    0%{background-position:0% 50%}
-    50%{background-position:100% -50%}
-    100%{background-position:0% 50%}
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .video-container {
