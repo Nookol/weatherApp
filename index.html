@@ -127,7 +127,7 @@
             let minMax = document.getElementById('minMax')
 
             location.innerHTML = weatherData.location;
-            temp.innerHTML = `${weatherData.actualTemp.toFixed()}°`;
+            temp.innerHTML = `${weatherData.actualTemp.toFixed()}&deg;F`;
             desc.innerHTML = weatherData.description;
             minMax.innerHTML = `Min ${weatherData.tempLow.toFixed()}°\tMax ${weatherData.tempHigh.toFixed()}°`
         }
