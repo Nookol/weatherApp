@@ -8,6 +8,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="home.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 
 </head>
 
@@ -25,6 +27,9 @@
         <h1 id="temp"></h1>
         <h6 id="description"></h6>
         <h6 id="minMax"></h6>
+    </div>
+    <div id="quoteRender">
+
     </div>
 </div>
 
@@ -85,7 +90,6 @@
             this.zipCode = document.getElementById('zip_text_box').value
         }
 
-
     }
 
     let render = {
@@ -119,25 +123,48 @@
 
     let getWeather = () => {
         const options = {
+            x: [
+                {
+                    dt: 1
+                },
+                {
+                    dt:2
+                }
+            ],
             key: '6c433bc9b94f39c617df099ceedc1db6',
-            api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
+            api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`,
+            api2: `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`
         };
-
 
         fetch(options.api)
             .then(response => response.json())
             .then(data => {
+                console.log(data.list)
                 weatherData.location = data.name;
                 weatherData.description = data.weather[0].description;
                 weatherData.actualTemp = kelvinToFahrenheit(data.main.temp)
                 weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max)
                 weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min)
                 weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like)
-
             })
-
             .catch(error => console.error(error))
             .finally(load)
+        {
+            var category = 'happiness'
+            $.ajax({
+                method: 'GET',
+                url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
+                headers: { 'X-Api-Key': 'LnjeDenxFbDBi3GeIWsHNQ==hg2QrrJXh4l0JUoS'},
+                contentType: 'application/json',
+                success: function(result) {
+                    console.log(result);
+                    document.getElementById('quoteRender').innerHTML = `<h4>"${result[0].quote}" <h6 style="text-align: center">-${result[0].author}</h6></h4>`
+                },
+                error: function ajaxError(jqXHR) {
+                    console.error('Error: ', jqXHR.responseText);
+                }
+            });
+        }
     }
 
     let load = () => {

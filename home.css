@@ -1,6 +1,6 @@
 body {
     min-height: 100vh;
-    max-width: 100%;
+    max-width: 100vh;
     position:relative;
     overflow-y: scroll;
     background: linear-gradient(16deg, #d5e2ff, #006eff);
@@ -97,6 +97,11 @@ body {
     .table > thead > tr > td,
     .table > thead > tr > th {
         border: none;
+    }
+
+    #quoteRender h4{
+        text-align: center;
+        font-family: monospace;
     }
 
 
