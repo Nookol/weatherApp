@@ -13,7 +13,7 @@
 
 </head>
 
-<body onloadstart="render.createBackground(); getBurger()">
+<body onloadstart="render.createBackground();">
 <div id="content">
     <div id="weatherRender">
         <h3 id="location"></h3>
@@ -27,6 +27,8 @@
         <div style="margin-top: -15px" id="weatherIcon">
         </div>
         <h6 id="minMax"></h6>
+        <div id="forecastTable"class="scrollmenu">
+        </div>
     </div>
     <div>
         <hr class="solid">
@@ -39,7 +41,7 @@
 
 <script>
 
-    var opts = {
+    const opts = {
         lines: 13, // The number of lines to draw
         length: 40, // The length of each line
         width: 10, // The line thickness
@@ -53,14 +55,18 @@
     document.body.append(spinner.el)
 
     function getBurger() {
-            $.ajax({
-                method: 'GET',
-                url: 'https://my-burger-api.herokuapp.com/burgers',
-                contentType: 'application/json',
-                success: function (result){
-                    console.log(result)
+        let url = 'http://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=London&days=1&aqi=no&alerts=no\n'
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let d = new Date();
+                let time = d.getHours()
+                let i = 0;
+                while (i < 24-time){
+                    document.getElementById('forecastTable').innerHTML += `<a style="color: #00f7ff">${data.forecast.forecastday[0].hour[i].temp_f}</a>`
+                    i++;
                 }
-            });
+            })
     }
 
     function getQuote() {
@@ -192,7 +198,7 @@
                 weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
                 weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
                 weatherData.icon = data.weather[0].icon
-
+                getBurger();
             })
             .catch(error => console.error(error))
             .finally(load)
