@@ -12,7 +12,6 @@
 
 
 </head>
-
 <body onloadstart="render.createBackground();">
 <div id="content">
     <div id="weatherRender">
@@ -38,7 +37,6 @@
 </div>
 
 </body>
-
 <script>
 
     const opts = {
@@ -51,19 +49,31 @@
         trail: 85, // Afterglow percentage
         className: 'spinner', // The CSS class to assign to the spinner
     };
+
     const spinner = new Spinner(opts).spin();
+
     document.body.append(spinner.el)
 
     function getBurger() {
-        let url = 'https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=London&days=1&aqi=no&alerts=no\n'
+        let url = 'https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=Chicago&days=1&aqi=no&alerts=no\n'
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 let d = new Date();
                 let time = d.getHours()
                 let i = 0;
+                let tz = "pm"
+                if (time <= 11 ){
+                    tz = "am"
+                }
                 while (i < 24-time){
-                    document.getElementById('forecastTable').innerHTML += `<a style="color: #00f7ff">${data.forecast.forecastday[0].hour[i].temp_f}</a>`
+                    document.getElementById('forecastTable').innerHTML += `
+                <div style="display: inline-block">
+                <a style="color: #00f7ff">${data.forecast.forecastday[0].hour[i].temp_f}</a>
+                <p style="color: #00f7ff">
+                ${time-12 + i + tz}
+                </p>
+                </div>`
                     i++;
                 }
             })
@@ -108,10 +118,12 @@
         getWeather('f')
     };
 
-    navigator.geolocation.getCurrentPosition(
-        successHandler, errorHandler,
-        {enableHighAccuracy: true, maximumAge: 10000});
-
+    //Nav
+    {
+        navigator.geolocation.getCurrentPosition(
+            successHandler, errorHandler,
+            {enableHighAccuracy: true, maximumAge: 10000});
+    }
 
     function kelvinToFahrenheit(kelvin, type, minMax) {
         if (minMax!=='n'){
@@ -148,13 +160,6 @@
     }
 
     let render = {
-        createBackground: function () {
-            if (userData.getDate().getHours() <= 5) {
-            }
-            if (userData.getDate().getHours() > 10) {
-            }
-        }
-        ,
         showWeather: function () {
             let location = document.getElementById('location');
             let temp = document.getElementById('temp')

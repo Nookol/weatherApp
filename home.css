@@ -112,12 +112,17 @@ div.scrollmenu a {
     display: inline-block;
     color: white;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
     text-decoration: none;
 }
 
 div.scrollmenu a:hover {
     background-color: #777;
+}
+
+#forecastTable{
+    border-radius: 20px;
+    margin: 0px 15% 0px 15%
 }
 
 
