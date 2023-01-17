@@ -13,7 +13,7 @@
 
 </head>
 
-<body onloadstart="render.createBackground()">
+<body onloadstart="render.createBackground(); getBurger()">
 <div id="content">
     <div id="weatherRender">
         <h3 id="location"></h3>
@@ -41,7 +41,7 @@
 
     var opts = {
         lines: 13, // The number of lines to draw
-        length: 70, // The length of each line
+        length: 40, // The length of each line
         width: 10, // The line thickness
         radius: 20, // The radius of the inner circle
         color: '#595858', // #rgb or #rrggbb or array of colors
@@ -49,12 +49,22 @@
         trail: 85, // Afterglow percentage
         className: 'spinner', // The CSS class to assign to the spinner
     };
-
-    var spinner = new Spinner(opts).spin();
+    const spinner = new Spinner(opts).spin();
     document.body.append(spinner.el)
 
+    function getBurger() {
+            $.ajax({
+                method: 'GET',
+                url: 'https://my-burger-api.herokuapp.com/burgers',
+                contentType: 'application/json',
+                success: function (result){
+                    console.log(result)
+                }
+            });
+    }
+
     function getQuote() {
-        let category = 'happiness'
+        let category = 'computers'
         $.ajax({
                 method: 'GET',
                 url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
@@ -80,13 +90,14 @@
         spinner.stop()
         getQuote();
         getWeather('f')
-    };
+    };``
 
     let errorHandler = function (errorObj) {
         alert(errorObj.code + ": " + errorObj.message);
         userData.latitude = 26.0546106;
         userData.longitude = -98.3939791;
         document.getElementById('content').style.display = 'initial'
+        getQuote();
         spinner.stop()
         getWeather('f')
     };
