@@ -85,7 +85,7 @@
 
     function getForcast(type) {
         document.getElementById('forecastTable').innerHTML = ""
-        let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=${userData.latitude},${userData.longitude}&days=3&aqi=no&alerts=no\n`
+        let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=${userData.latitude},${userData.longitude}&days=2&aqi=no&alerts=no\n`
         // let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=North-Douglas-county&days=3&aqi=no&alerts=no\n`
         fetch(url)
             .then(response => response.json())
@@ -93,7 +93,7 @@
                 let d = new Date();
                 let time = d.getHours()
                 let j = 0;
-                let temp = time;
+                let temp = time-1;
                 if (type == "f"){
                     for (let i = 0; i < 24; i++) {
                         if (temp > 23) {
