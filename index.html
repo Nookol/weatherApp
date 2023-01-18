@@ -85,6 +85,7 @@
 
     function getForcast() {
         let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=${userData.latitude},${userData.longitude}&days=3&aqi=no&alerts=no\n`
+        // let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=North-Douglas-county&days=3&aqi=no&alerts=no\n`
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -97,15 +98,20 @@
                         temp = 0;
                         j++
                     }
-                    var arr = data.forecast.forecastday[1].hour[temp].time.toString().split(" ", 2);
+                    console.log(data.forecast.forecastday[j])
+                    var arr = data.forecast.forecastday[j].hour[temp].time.toString().split(" ", 2);
                     document.getElementById('forecastTable').innerHTML += `
                     <div style="display: inline-block">
-                    <a style="color: #00f7ff">${data.forecast.forecastday[1].hour[temp].temp_f}&deg; <p>${timeMap[arr[1]]}</p></a>
+                    <a>${data.forecast.forecastday[j].hour[temp].temp_f}&deg;
+                    <p>
+                    <img src="${data.current.condition.icon}" height="30px"></p
+                    <p style="font-size: 12px">${timeMap[arr[1]]}</p>
+                    </a>
                     </div>`
-
                     temp++;
                 }
             })
+
     }
 
     function getQuote() {
@@ -177,13 +183,14 @@
             console.log(date.getHours())
             return date;
         },
-        locationID: function ()
-        {
+        locationID: function () {
             let code = ""
             let URL = `https://api.weatherapi.com/v1/search.json?key=0c98b79da4a843b5b03175505231701&q=${this.latitude},${this.longitude}\n`
             fetch(URL)
                 .then(response => response.json())
-                .then(data => {return data[0].id})
+                .then(data => {
+                    return data[0].id
+                })
         },
         latitude: null,
         longitude: null,

@@ -75,6 +75,10 @@ hr {
 }
 
 @media (min-width: 700px) {
+    #forecastTable{
+        border-radius: 20px;
+        margin: 0px 33% 0px 33%
+    }
     /* big landscape tablets, laptops, and desktops */
     #quoteRender {
         margin: 0 70px 0 70px
@@ -82,7 +86,15 @@ hr {
 }
 
 @media (min-width: 1281px) {
+    #forecastTable{
+        border-radius: 20px;
+        margin: 0px 33% 0px 33%
+    }
     /* hi-res laptops and desktops */
+    #forecastTable{
+        border-radius: 20px;
+        margin: 0px 33% 0px 33%
+    }
     #quoteRender {
         margin: 0 70px 0 70px
     }
@@ -121,6 +133,7 @@ div.scrollmenu a:hover {
 }
 
 #forecastTable{
+    background: linear-gradient(90deg, rgba(14, 19, 26, 0.56), rgba(14, 19, 26, 0.4), rgba(14, 19, 26, 0.56));
     border-radius: 20px;
     margin: 0px 2.5% 0px 2.5%
 }
