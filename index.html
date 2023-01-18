@@ -93,20 +93,19 @@
                 let d = new Date();
                 let time = d.getHours()
                 let j = 0;
-                let temp = time-1;
+                let temp = time;
                 if (type == "f"){
                     for (let i = 0; i < 24; i++) {
                         if (temp > 23) {
                             temp = 0;
                             j++
                         }
-                        console.log(data.forecast.forecastday[j])
                         var arr = data.forecast.forecastday[j].hour[temp].time.toString().split(" ", 2);
                         document.getElementById('forecastTable').innerHTML += `
                     <div style="display: inline-block">
                     <a>${data.forecast.forecastday[j].hour[temp].temp_f}&deg;
                     <p>
-                    <img src="${data.current.condition.icon}" height="30px"></p
+                    <img src="${data.forecast.forecastday[j].hour[temp].condition.icon}" height="30px"></p
                     <p style="font-size: 12px">${timeMap[arr[1]]}</p>
                     </a>
                     </div>`
