@@ -83,7 +83,8 @@
 
     document.body.append(spinner.el)
 
-    function getForcast() {
+    function getForcast(type) {
+        document.getElementById('forecastTable').innerHTML = ""
         let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=${userData.latitude},${userData.longitude}&days=3&aqi=no&alerts=no\n`
         // let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=North-Douglas-county&days=3&aqi=no&alerts=no\n`
         fetch(url)
@@ -93,14 +94,15 @@
                 let time = d.getHours()
                 let j = 0;
                 let temp = time;
-                for (let i = 0; i < 24; i++) {
-                    if (temp > 23) {
-                        temp = 0;
-                        j++
-                    }
-                    console.log(data.forecast.forecastday[j])
-                    var arr = data.forecast.forecastday[j].hour[temp].time.toString().split(" ", 2);
-                    document.getElementById('forecastTable').innerHTML += `
+                if (type == "f"){
+                    for (let i = 0; i < 24; i++) {
+                        if (temp > 23) {
+                            temp = 0;
+                            j++
+                        }
+                        console.log(data.forecast.forecastday[j])
+                        var arr = data.forecast.forecastday[j].hour[temp].time.toString().split(" ", 2);
+                        document.getElementById('forecastTable').innerHTML += `
                     <div style="display: inline-block">
                     <a>${data.forecast.forecastday[j].hour[temp].temp_f}&deg;
                     <p>
@@ -108,8 +110,30 @@
                     <p style="font-size: 12px">${timeMap[arr[1]]}</p>
                     </a>
                     </div>`
-                    temp++;
+                        temp++;
+                    }
                 }
+                else{
+                    for (let i = 0; i < 24; i++) {
+                        if (temp > 23) {
+                            temp = 0;
+                            j++
+                        }
+                        console.log(data.forecast.forecastday[j])
+                        var arr = data.forecast.forecastday[j].hour[temp].time.toString().split(" ", 2);
+                        document.getElementById('forecastTable').innerHTML += `
+                    <div style="display: inline-block">
+                    <a>${data.forecast.forecastday[j].hour[temp].temp_c}&deg;
+                    <p>
+                    <img src="${data.current.condition.icon}" height="30px"></p
+                    <p style="font-size: 12px">${timeMap[arr[1]]}</p>
+                    </a>
+                    </div>`
+                        temp++;
+                    }
+                }
+
+
             })
 
     }
@@ -245,7 +269,7 @@
                 weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
                 weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
                 weatherData.icon = data.weather[0].icon
-                getForcast();
+                getForcast(type);
             })
             .catch(error => console.error(error))
             .finally(load)
