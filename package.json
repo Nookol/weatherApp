@@ -2,6 +2,8 @@
   "dependencies": {
     "@mdi/js": "^7.1.96",
     "ajax": "^0.0.4",
-    "bootstrap": "^3.4.1"
+    "bootstrap": "^3.4.1",
+    "geo2zip": "^4.0.1",
+    "latlng-to-zip": "^0.0.2"
   }
 }

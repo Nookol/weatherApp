@@ -26,7 +26,7 @@
         <div style="margin-top: -15px" id="weatherIcon">
         </div>
         <h6 id="minMax"></h6>
-        <div id="forecastTable"class="scrollmenu">
+        <div id="forecastTable" class="scrollmenu">
         </div>
     </div>
     <div>
@@ -38,6 +38,35 @@
 
 </body>
 <script>
+
+
+    let timeMap =
+        {
+            "00:00": "12:00 AM",
+            "01:00": "1:00 AM",
+            "02:00": "2:00 AM",
+            "03:00": "3:00 AM",
+            "04:00": "4:00 AM",
+            "05:00": "5:00 AM",
+            "06:00": "6:00 AM",
+            "07:00": "7:00 AM",
+            "08:00": "8:00 AM",
+            "09:00": "9:00 AM",
+            "10:00": "10:00 AM",
+            "11:00": "11:00 AM",
+            "12:00": "12:00 PM",
+            "13:00": "1:00 PM",
+            "14:00": "2:00 PM",
+            "15:00": "3:00 PM",
+            "16:00": "4:00 PM",
+            "17:00": "5:00 PM",
+            "18:00": "6:00 PM",
+            "19:00": "7:00 PM",
+            "20:00": "8:00 PM",
+            "21:00": "9:00 PM",
+            "22:00": "10:00 PM",
+            "23:00": "11:00 PM",
+        }
 
     const opts = {
         lines: 13, // The number of lines to draw
@@ -54,27 +83,27 @@
 
     document.body.append(spinner.el)
 
-    function getBurger() {
-        let url = 'https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=Chicago&days=1&aqi=no&alerts=no\n'
+    function getForcast() {
+        let url = `https://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=${userData.latitude},${userData.longitude}&days=3&aqi=no&alerts=no\n`
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 let d = new Date();
                 let time = d.getHours()
-                let i = 0;
-                let tz = "pm"
-                if (time <= 11 ){
-                    tz = "am"
-                }
-                while (i < 24-time){
+                let j = 0;
+                let temp = time;
+                for (let i = 0; i < 24; i++) {
+                    if (temp > 23) {
+                        temp = 0;
+                        j++
+                    }
+                    var arr = data.forecast.forecastday[1].hour[temp].time.toString().split(" ", 2);
                     document.getElementById('forecastTable').innerHTML += `
-                <div style="display: inline-block">
-                <a style="color: #00f7ff">${data.forecast.forecastday[0].hour[i].temp_f}</a>
-                <p style="color: #00f7ff">
-                ${time-12 + i + tz}
-                </p>
-                </div>`
-                    i++;
+                    <div style="display: inline-block">
+                    <a style="color: #00f7ff">${data.forecast.forecastday[1].hour[temp].temp_f}&deg; <p>${timeMap[arr[1]]}</p></a>
+                    </div>`
+
+                    temp++;
                 }
             })
     }
@@ -106,7 +135,7 @@
         spinner.stop()
         getQuote();
         getWeather('f')
-    };``
+    };
 
     let errorHandler = function (errorObj) {
         alert(errorObj.code + ": " + errorObj.message);
@@ -126,22 +155,20 @@
     }
 
     function kelvinToFahrenheit(kelvin, type, minMax) {
-        if (minMax!=='n'){
-            if (type === 'f'){
+        if (minMax !== 'n') {
+            if (type === 'f') {
                 return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;F`;
             }
-            if (type === 'c'){
+            if (type === 'c') {
                 return `${(kelvin - 273.15).toFixed()}&deg;C`
-            }
-            else return `${kelvin.toFixed()}&deg;K`
+            } else return `${kelvin.toFixed()}&deg;K`
         }
-        if (type === 'f'){
+        if (type === 'f') {
             return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;`;
         }
-        if (type === 'c'){
+        if (type === 'c') {
             return `${(kelvin - 273.15).toFixed()}&deg;`
-        }
-        else return `${kelvin.toFixed()}&deg;`
+        } else return `${kelvin.toFixed()}&deg;`
     }
 
     let userData = {
@@ -149,6 +176,14 @@
             let date = new Date();
             console.log(date.getHours())
             return date;
+        },
+        locationID: function ()
+        {
+            let code = ""
+            let URL = `https://api.weatherapi.com/v1/search.json?key=0c98b79da4a843b5b03175505231701&q=${this.latitude},${this.longitude}\n`
+            fetch(URL)
+                .then(response => response.json())
+                .then(data => {return data[0].id})
         },
         latitude: null,
         longitude: null,
@@ -199,11 +234,11 @@
                 weatherData.location = data.name;
                 weatherData.description = data.weather[0].description;
                 weatherData.actualTemp = kelvinToFahrenheit(data.main.temp, type)
-                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max, type , 'n')
+                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max, type, 'n')
                 weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
                 weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
                 weatherData.icon = data.weather[0].icon
-                getBurger();
+                getForcast();
             })
             .catch(error => console.error(error))
             .finally(load)
