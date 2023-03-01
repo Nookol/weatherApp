@@ -1,16 +1,11 @@
 function getBurger() {
-    let url = 'http://api.weatherapi.com/v1/forecast.json?key=0c98b79da4a843b5b03175505231701&q=carol-stream-illinois-united-states-of-america&days=1&aqi=no&alerts=no\n'
+    let key = "6c433bc9b94f39c617df099ceedc1db6"
+    let lat = 41.755129346436554
+    let lon = -88.34940809552472
+    let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`
     fetch(url)
         .then(response => response.json())
-        .then(data => {
-            let d = new Date();
-            let time = d.getHours()
-            let i = time;
-            while (i < 24) {
-                console.log(data.forecast.forecastday[0])
-                // console.log(data.forecast.forecastday[0].hour[i].temp_f)
-                i++;
-            }
-        })
+        .then(data => {console.log(data.hourly[0])})
 }
+
 getBurger()
