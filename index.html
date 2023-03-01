@@ -113,6 +113,24 @@
                     </div>`
                     }
                 }
+                if (type == "c") {
+                    for (let i = 0; i < 24; i++) {
+                        if(time>23){time = 0;}
+                        document.getElementById('forecastTable').innerHTML += `
+                    <div style="display: inline-block">
+                    <a>${kelvinToFahrenheit(data.hourly[i].temp,'c','n')}
+                    <p>
+                    <img height="60px" src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@4x.png" alt="weather-logo">
+                    </p
+                    <p>
+
+
+                       ${timeMap[time++]}
+                    </p>
+                    </a>
+                    </div>`
+                    }
+                }
             })
 
     }
