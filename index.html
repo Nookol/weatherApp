@@ -97,7 +97,7 @@
                 let time = date.getHours();
                 if (type == "f") {
                     for (let i = 0; i < 24; i++) {
-                        if(time>=23){time = 0;}
+                        if(time>23){time = 0;}
                         document.getElementById('forecastTable').innerHTML += `
                     <div style="display: inline-block">
                     <a>${kelvinToFahrenheit(data.hourly[i].temp,'f','n')}
@@ -118,7 +118,7 @@
     }
 
     function getQuote() {
-        let category = 'computers'
+        let category = 'intelligence'
         $.ajax({
                 method: 'GET',
                 url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
