@@ -1,142 +1,183 @@
+:root {
+  color-scheme: dark;
+  --bg-1: #0f172a;
+  --bg-2: #1d4ed8;
+  --card: rgba(15, 23, 42, 0.72);
+  --card-border: rgba(148, 163, 184, 0.18);
+  --text: #e5eefb;
+  --muted: #bfd0f3;
+  --accent: #7dd3fc;
+  --accent-2: #38bdf8;
+  --shadow: 0 30px 80px rgba(2, 8, 23, 0.4);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; font-family: Inter, system-ui, sans-serif; color: var(--text); }
 body {
-    background: linear-gradient(120deg, #ff0062, #ff8126, #00ffa8, #00f7ff);
-    animation: gradient 12s ease infinite;
-    background-size: 10000%;
+  background:
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent 30%),
+    linear-gradient(140deg, var(--bg-1), var(--bg-2));
 }
 
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
+.app-shell {
+  width: min(1080px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 40px;
 }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+.hero-card, .panel {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
 }
 
-hr {
-    background-color: rgba(0, 0, 0, 0.46);
-    height: .75px;
-    border: 0;
-    width: 80%;
+.hero-card {
+  padding: 24px;
+  margin-bottom: 20px;
 }
 
-#quoteButton {
-    background: rgba(255, 255, 255, 0);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 50px;
-    width: 100px;
-    color: rgba(0, 0, 0, 0.46);
-    border-color: rgba(0, 0, 0, 0.46);
-    border-radius: 10px;
+.hero-top, .panel-header, .hero-main, .meta-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#content {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    display: none;
+.eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-size: 12px;
 }
 
-#weatherRender {
-    margin-top: 50px;
-    text-align: center;
+h1, h2, p { margin: 0; }
+h1 { font-size: clamp(32px, 6vw, 58px); line-height: 0.96; }
+h2 { font-size: 22px; }
+.description, .feels-like, .min-max, .forecast-desc, .meta-pill span, footer { color: var(--muted); }
+
+.unit-toggle {
+  display: inline-flex;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px;
 }
 
-#weatherRender h1 {
-    margin-top: -10px;
-    font-size: 13.5vh;
+.unit-btn, .ghost-btn {
+  border: none;
+  cursor: pointer;
+  transition: 160ms ease;
+  font: inherit;
 }
 
-#weatherRender h3 {
-    font-size: 6vh;
+.unit-btn {
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 14px;
+  border-radius: 999px;
+  min-width: 56px;
 }
 
-#weatherRender h6 {
-    margin-top: -5px;
-    font-size: 3vh;
+.unit-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #082032;
+  font-weight: 700;
 }
 
-
-.table > tbody > tr > td,
-.table > tbody > tr > th,
-.table > tfoot > tr > td,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > thead > tr > th {
-    border: none;
+.temp {
+  font-size: clamp(64px, 12vw, 112px);
+  font-weight: 800;
+  line-height: 0.9;
+  margin-bottom: 10px;
 }
 
-@media (min-width: 700px) {
-    #forecastTable{
-        border-radius: 20px;
-        margin: 0px 33% 0px 33%
-    }
-    /* big landscape tablets, laptops, and desktops */
-    #quoteRender {
-        margin: 0 70px 0 70px
-    }
+.weather-icon img {
+  width: min(180px, 32vw);
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(15, 23, 42, 0.35));
 }
 
-@media (min-width: 1281px) {
-    #forecastTable{
-        border-radius: 20px;
-        margin: 0px 33% 0px 33%
-    }
-    /* hi-res laptops and desktops */
-    #forecastTable{
-        border-radius: 20px;
-        margin: 0px 33% 0px 33%
-    }
-    #quoteRender {
-        margin: 0 70px 0 70px
-    }
+.meta-row {
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
-#quoteRender {
-    padding: 15px 55px 0px 55px;
-    text-align: center;
-    font-family: monospace;
+.meta-pill {
+  min-width: 180px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid var(--card-border);
 }
 
-#weatherRender p button {
-    border-radius: 40px;
-    background: rgba(255, 255, 255, 0);
-    color: rgba(0, 0, 0, 0.46);
-    border-color: rgba(0, 0, 0, 0.46);
-    font-size: 7px;
+.meta-pill strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
 }
 
-div.scrollmenu {
-    background-color: #333;
-    overflow: auto;
-    white-space: nowrap;
+.panel {
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-div.scrollmenu a {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    text-decoration: none;
+.forecast-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
 }
 
-div.scrollmenu a:hover {
-    background-color: #777;
+.forecast-card {
+  background: rgba(15, 23, 42, 0.42);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 14px;
+  text-align: center;
 }
 
-#forecastTable{
-    background: linear-gradient(90deg, rgba(14, 19, 26, 0.56), rgba(14, 19, 26, 0.4), rgba(14, 19, 26, 0.56));
-    border-radius: 20px;
-    margin: 0px 2.5% 0px 2.5%
+.forecast-card img {
+  width: 56px;
+  height: 56px;
 }
 
+.forecast-time { font-weight: 700; margin-bottom: 8px; }
+.forecast-temp { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.forecast-desc { font-size: 13px; }
 
+.quote-panel blockquote {
+  margin: 16px 0 0;
+  padding: 0;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.4;
+}
 
+.quote-panel footer {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+.ghost-btn {
+  background: rgba(125, 211, 252, 0.12);
+  color: var(--text);
+  border: 1px solid rgba(125, 211, 252, 0.24);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.ghost-btn:hover, .unit-btn:hover { transform: translateY(-1px); }
+
+.forecast-empty {
+  color: var(--muted);
+  padding: 16px;
+}
+
+@media (max-width: 720px) {
+  .hero-top, .hero-main, .panel-header { align-items: flex-start; flex-direction: column; }
+  .unit-toggle { width: 100%; justify-content: space-between; }
+  .unit-btn { flex: 1; }
+  .weather-icon img { width: 120px; }
+}
