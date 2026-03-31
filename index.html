@@ -1,279 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Blah</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="home.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Neather Weather</title>
+  <link rel="preconnect" href="https://api.openweathermap.org">
+  <link rel="stylesheet" href="home.css">
 </head>
-<body onloadstart="render.createBackground();">
-<div id="content">
-
-
-    <div id="weatherRender">
-        <h3 id="location"></h3>
-        <h1 id="temp"></h1>
-        <p>
-            <button type="button" id="fButton" onclick="getWeather('f')" class="btn btn-primary">F</button>
-            <button type="button" id="cButton" onclick="getWeather('c')" class="btn btn-primary">C</button>
-            <button type="button" id="kButton" onclick="getWeather()" class="btn btn-primary">K</button>
-        </p>
-        <h6 id="description"></h6>
-        <div style="margin-top: -15px" id="weatherIcon">
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">Live local weather</p>
+          <h1 id="location">Loading location…</h1>
+          <p id="description" class="description">Fetching current conditions</p>
         </div>
-        <h6 id="minMax"></h6>
-        <div id="forecastTable" class="scrollmenu">
+        <div class="unit-toggle" aria-label="Temperature unit toggle">
+          <button data-unit="f" class="unit-btn active">°F</button>
+          <button data-unit="c" class="unit-btn">°C</button>
+          <button data-unit="k" class="unit-btn">K</button>
         </div>
-    </div>
-    <div>
-        <hr class="solid">
-        <div id="quoteRender"></div>
-        <hr class="solid">
-    </div>
-</div>
+      </div>
 
-</body>
-<script>
+      <div class="hero-main">
+        <div>
+          <div id="temp" class="temp">--</div>
+          <div id="feelsLike" class="feels-like">Feels like --</div>
+          <div id="minMax" class="min-max">H -- · L --</div>
+        </div>
+        <div id="weatherIcon" class="weather-icon" aria-hidden="true"></div>
+      </div>
 
-    let timeMap =
-        {
-            "0": "12:00 AM",
-            "1": "1:00 AM",
-            "2": "2:00 AM",
-            "3": "3:00 AM",
-            "4": "4:00 AM",
-            "5": "5:00 AM",
-            "6": "6:00 AM",
-            "7": "7:00 AM",
-            "8": "8:00 AM",
-            "9": "9:00 AM",
-            "10": "10:00 AM",
-            "11": "11:00 AM",
-            "12": "12:00 PM",
-            "13": "1:00 PM",
-            "14": "2:00 PM",
-            "15": "3:00 PM",
-            "16": "4:00 PM",
-            "17": "5:00 PM",
-            "18": "6:00 PM",
-            "19": "7:00 PM",
-            "20": "8:00 PM",
-            "21": "9:00 PM",
-            "22": "10:00 PM",
-            "23": "11:00 PM",
-        }
+      <div class="meta-row">
+        <div class="meta-pill"><span>Updated</span><strong id="updatedAt">--</strong></div>
+        <div class="meta-pill"><span>Status</span><strong id="statusText">Loading…</strong></div>
+      </div>
+    </section>
 
-    const opts = {
-        lines: 13, // The number of lines to draw
-        length: 40, // The length of each line
-        width: 10, // The line thickness
-        radius: 20, // The radius of the inner circle
-        color: '#595858', // #rgb or #rrggbb or array of colors
-        speed: 1.25, // Rounds per second
-        trail: 85, // Afterglow percentage
-        className: 'spinner', // The CSS class to assign to the spinner
+    <section class="panel">
+      <div class="panel-header">
+        <h2>24-hour forecast</h2>
+      </div>
+      <div id="forecastTable" class="forecast-grid"></div>
+    </section>
+
+    <section class="panel quote-panel">
+      <div class="panel-header">
+        <h2>Quote</h2>
+        <button type="button" id="quoteButton" class="ghost-btn">New quote</button>
+      </div>
+      <blockquote id="quoteRender">Loading quote…</blockquote>
+    </section>
+  </main>
+
+  <script>
+    const WEATHER_KEY = '6c433bc9b94f39c617df099ceedc1db6';
+    const QUOTE_KEY = 'LnjeDenxFbDBi3GeIWsHNQ==hg2QrrJXh4l0JUoS';
+    const DEFAULT_COORDS = { latitude: 26.0546106, longitude: -98.3939791 };
+    const state = {
+      unit: 'f',
+      coords: null,
+      weather: null,
+      forecast: []
     };
 
-    const spinner = new Spinner(opts).spin();
-
-    document.body.append(spinner.el)
-
-    function getForcast(type) {
-        document.getElementById('forecastTable').innerHTML = ""
-        let key = "6c433bc9b94f39c617df099ceedc1db6"
-        let lat = 41.755129346436554
-        let lon = -88.34940809552472
-        let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                let date = new Date();
-                let time = date.getHours();
-                if (type == "f") {
-                    for (let i = 0; i < 24; i++) {
-                        if(time>23){time = 0;}
-                        document.getElementById('forecastTable').innerHTML += `
-                    <div style="display: inline-block">
-                    <a>${kelvinToFahrenheit(data.hourly[i].temp,'f','n')}
-                    <p>
-                    <img height="60px" src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@4x.png" alt="weather-logo">
-                    </p
-                    <p>
-
-
-                       ${timeMap[time++]}
-                    </p>
-                    </a>
-                    </div>`
-                    }
-                }
-                if (type == "c") {
-                    for (let i = 0; i < 24; i++) {
-                        if(time>23){time = 0;}
-                        document.getElementById('forecastTable').innerHTML += `
-                    <div style="display: inline-block">
-                    <a>${kelvinToFahrenheit(data.hourly[i].temp,'c','n')}
-                    <p>
-                    <img height="60px" src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@4x.png" alt="weather-logo">
-                    </p
-                    <p>
-
-
-                       ${timeMap[time++]}
-                    </p>
-                    </a>
-                    </div>`
-                    }
-                }
-            })
-
-    }
-
-    function getQuote() {
-        let category = 'intelligence'
-        $.ajax({
-                method: 'GET',
-                url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
-                headers: {'X-Api-Key': 'LnjeDenxFbDBi3GeIWsHNQ==hg2QrrJXh4l0JUoS'},
-                contentType: 'application/json',
-                success: function (result) {
-                    console.log(result);
-                    let qRender = document.getElementById('quoteRender')
-                    qRender.innerHTML = `<h4>"${result[0].quote}" <h6 style="text-align: center">-${result[0].author}</h6></h4>`
-                    qRender.innerHTML += `<button type="button" id="quoteButton" onclick="getQuote()" class="btn btn-primary">New Quote</button>`
-                },
-                error: function ajaxError(jqXHR) {
-                    console.error('Error: ', jqXHR.responseText);
-                }
-            }
-        );
-    }
-
-    let successHandler = function (position) {
-        userData.latitude = position.coords.latitude;
-        userData.longitude = position.coords.longitude;
-        document.getElementById('content').style.display = 'initial'
-        spinner.stop()
-        getQuote();
-        getWeather('f')
+    const els = {
+      location: document.getElementById('location'),
+      description: document.getElementById('description'),
+      temp: document.getElementById('temp'),
+      feelsLike: document.getElementById('feelsLike'),
+      minMax: document.getElementById('minMax'),
+      weatherIcon: document.getElementById('weatherIcon'),
+      forecastTable: document.getElementById('forecastTable'),
+      quoteRender: document.getElementById('quoteRender'),
+      quoteButton: document.getElementById('quoteButton'),
+      updatedAt: document.getElementById('updatedAt'),
+      statusText: document.getElementById('statusText')
     };
 
-    let errorHandler = function (errorObj) {
-        alert(errorObj.code + ": " + errorObj.message);
-        userData.latitude = 26.0546106;
-        userData.longitude = -98.3939791;
-        document.getElementById('content').style.display = 'initial'
-        getQuote();
-        spinner.stop()
-        getWeather('f')
-    };
+    const timeFormatter = new Intl.DateTimeFormat(undefined, { hour: 'numeric' });
+    const updatedFormatter = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' });
 
-    //Nav
-    {
-        navigator.geolocation.getCurrentPosition(
-            successHandler, errorHandler,
-            {enableHighAccuracy: true, maximumAge: 10000});
+    function setStatus(message) {
+      els.statusText.textContent = message;
     }
 
-    function kelvinToFahrenheit(kelvin, type, minMax) {
-        if (minMax !== 'n') {
-            if (type === 'f') {
-                return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;F`;
-            }
-            if (type === 'c') {
-                return `${(kelvin - 273.15).toFixed()}&deg;C`
-            } else return `${kelvin.toFixed()}&deg;K`
-        }
-        if (type === 'f') {
-            return `${((kelvin - 273.15) * 9 / 5 + 32).toFixed()}&deg;`;
-        }
-        if (type === 'c') {
-            return `${(kelvin - 273.15).toFixed()}&deg;`
-        } else return `${kelvin.toFixed()}&deg;`
+    function convertTemp(kelvin, unit, withUnit = true) {
+      if (kelvin == null) return '--';
+      let value = kelvin;
+      let suffix = 'K';
+      if (unit === 'f') {
+        value = (kelvin - 273.15) * 9 / 5 + 32;
+        suffix = '°F';
+      } else if (unit === 'c') {
+        value = kelvin - 273.15;
+        suffix = '°C';
+      }
+      return `${Math.round(value)}${withUnit ? suffix : '°'}`;
     }
 
-    let userData = {
-        getDate: function () {
-            let date = new Date();
-            console.log(date.getHours())
-            return date;
-        },
-        locationID: function () {
-            let code = ""
-            let URL = `https://api.weatherapi.com/v1/search.json?key=0c98b79da4a843b5b03175505231701&q=${this.latitude},${this.longitude}\n`
-            fetch(URL)
-                .then(response => response.json())
-                .then(data => {
-                    return data[0].id
-                })
-        },
-        latitude: null,
-        longitude: null,
-        zipCode: null,
-        setZipCode: function () {
-            this.zipCode = document.getElementById('zip_text_box').value
-        }
-
+    function iconMarkup(icon, description) {
+      return `<img src="https://openweathermap.org/img/wn/${icon}@4x.png" alt="${description}">`;
     }
 
-    let render = {
-        showWeather: function () {
-            let location = document.getElementById('location');
-            let temp = document.getElementById('temp')
-            let desc = document.getElementById('description')
-            let minMax = document.getElementById('minMax')
-            let icon = document.getElementById('weatherIcon')
-
-            location.innerHTML = weatherData.location;
-            temp.innerHTML = `${weatherData.actualTemp}`;
-            desc.innerHTML = weatherData.description;
-            minMax.innerHTML = `Min ${weatherData.tempLow}\tMax ${weatherData.tempHigh}`
-            icon.innerHTML = `<img height="60px" src="https://openweathermap.org/img/wn/${weatherData.icon}@4x.png" alt="weather-logo">`
-
-        }
+    function renderWeather() {
+      if (!state.weather) return;
+      const { name, description, temp, tempMin, tempMax, feelsLike, icon } = state.weather;
+      els.location.textContent = name;
+      els.description.textContent = description;
+      els.temp.textContent = convertTemp(temp, state.unit, true);
+      els.feelsLike.textContent = `Feels like ${convertTemp(feelsLike, state.unit, true)}`;
+      els.minMax.textContent = `H ${convertTemp(tempMax, state.unit, true)} · L ${convertTemp(tempMin, state.unit, true)}`;
+      els.weatherIcon.innerHTML = iconMarkup(icon, description);
+      els.updatedAt.textContent = updatedFormatter.format(new Date());
     }
 
-    let weatherData = {
-        actualTemp: null,
-        feelsLikeTemp: null,
-        location: null,
-        description: null,
-        tempHigh: null,
-        tempLow: null,
-        icon: null
+    function renderForecast() {
+      if (!state.forecast.length) {
+        els.forecastTable.innerHTML = '<div class="forecast-empty">Forecast unavailable</div>';
+        return;
+      }
+      els.forecastTable.innerHTML = state.forecast.map(entry => `
+        <article class="forecast-card">
+          <p class="forecast-time">${timeFormatter.format(new Date(entry.dt * 1000))}</p>
+          <img src="https://openweathermap.org/img/wn/${entry.icon}.png" alt="${entry.description}">
+          <p class="forecast-temp">${convertTemp(entry.temp, state.unit, true)}</p>
+          <p class="forecast-desc">${entry.description}</p>
+        </article>
+      `).join('');
     }
 
-    let getWeather = (type) => {
-        const options = {
-            key: '6c433bc9b94f39c617df099ceedc1db6',
-            api: `https://api.openweathermap.org/data/2.5/weather?lat=${userData.latitude}&lon=${userData.longitude}&appid=6c433bc9b94f39c617df099ceedc1db6`,
+    function renderAll() {
+      renderWeather();
+      renderForecast();
+    }
+
+    async function fetchJson(url, options = {}) {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      return response.json();
+    }
+
+    async function loadQuote() {
+      try {
+        const data = await fetchJson('https://api.api-ninjas.com/v1/quotes?category=intelligence', {
+          headers: { 'X-Api-Key': QUOTE_KEY }
+        });
+        const quote = data?.[0];
+        els.quoteRender.innerHTML = quote
+          ? `“${quote.quote}”<footer>— ${quote.author}</footer>`
+          : 'No quote available right now.';
+      } catch {
+        els.quoteRender.textContent = 'Quote unavailable right now.';
+      }
+    }
+
+    async function loadWeather() {
+      if (!state.coords) return;
+      setStatus('Refreshing weather');
+      const { latitude, longitude } = state.coords;
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_KEY}`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${WEATHER_KEY}`;
+      try {
+        const [weatherData, forecastData] = await Promise.all([
+          fetchJson(weatherUrl),
+          fetchJson(forecastUrl)
+        ]);
+        state.weather = {
+          name: weatherData.name || 'Unknown location',
+          description: weatherData.weather?.[0]?.description || 'No description',
+          temp: weatherData.main?.temp,
+          tempMin: weatherData.main?.temp_min,
+          tempMax: weatherData.main?.temp_max,
+          feelsLike: weatherData.main?.feels_like,
+          icon: weatherData.weather?.[0]?.icon || '01d'
         };
-        fetch(options.api)
-            .then(response => response.json())
-            .then(data => {
-                weatherData.location = data.name;
-                weatherData.description = data.weather[0].description;
-                weatherData.actualTemp = kelvinToFahrenheit(data.main.temp, type)
-                weatherData.tempHigh = kelvinToFahrenheit(data.main.temp_max, type, 'n')
-                weatherData.tempLow = kelvinToFahrenheit(data.main.temp_min, type, 'n')
-                weatherData.feelsLikeTemp = kelvinToFahrenheit(data.main.feels_like, type)
-                weatherData.icon = data.weather[0].icon
-                getForcast(type);
-            })
-            .catch(error => console.error(error))
-            .finally(load)
+        state.forecast = (forecastData.hourly || []).slice(0, 24).map(hour => ({
+          dt: hour.dt,
+          temp: hour.temp,
+          icon: hour.weather?.[0]?.icon || '01d',
+          description: hour.weather?.[0]?.main || ''
+        }));
+        renderAll();
+        setStatus('Live');
+      } catch (error) {
+        console.error(error);
+        setStatus('Weather unavailable');
+        els.description.textContent = 'Could not load weather data';
+      }
     }
 
-    let load = () => {
-        render.showWeather()
-        console.log(JSON.stringify(weatherData))
+    function setUnit(unit) {
+      state.unit = unit;
+      document.querySelectorAll('.unit-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.unit === unit);
+      });
+      renderAll();
     }
 
-</script>
+    function resolveLocation() {
+      return new Promise(resolve => {
+        if (!navigator.geolocation) {
+          resolve(DEFAULT_COORDS);
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          position => resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }),
+          () => resolve(DEFAULT_COORDS),
+          { enableHighAccuracy: true, maximumAge: 300000, timeout: 8000 }
+        );
+      });
+    }
+
+    document.querySelectorAll('.unit-btn').forEach(btn => {
+      btn.addEventListener('click', () => setUnit(btn.dataset.unit));
+    });
+    els.quoteButton.addEventListener('click', loadQuote);
+
+    async function init() {
+      setStatus('Locating');
+      state.coords = await resolveLocation();
+      await Promise.all([loadWeather(), loadQuote()]);
+    }
+
+    init();
+  </script>
+</body>
 </html>
